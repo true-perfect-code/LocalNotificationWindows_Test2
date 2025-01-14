@@ -1,0 +1,91 @@
+﻿@page "/"
+
+
+<h1>Local notification in windows</h1>
+
+<br />
+
+@if(isNotificationSent)
+{
+    <p>
+        The local Windows notification has been sent. Now close the application and wait until Windows shows you the notification, then click on it and the app will open again automatically. Unfortunately, you will not receive any parameters from Windows and this is wrong because we passed the parameters to Windows when sending the notification.
+    </p>
+}
+else
+{
+    <p>
+        Read start arguments via Home.razor -> OnAfterRenderAsync(bool firstRender) -> GetCommandLineArgs: <b>@(String.IsNullOrEmpty(combinedArguments) ? "Empty" : combinedArguments)</b>
+    </p>
+    <hr />
+    <p>
+        Read start arguments via App.xaml.cs -> OnLaunched(LaunchActivatedEventArgs args): <b>@(String.IsNullOrEmpty(@AppLaunchArguments.LaunchArguments) ? "Empty" : @AppLaunchArguments.LaunchArguments)</b>
+    </p>
+    <hr />
+    <p>
+        Read start arguments via App.xaml.cs -> OnLaunched() -> GetCommandLineArgs: <b>@(String.IsNullOrEmpty(@AppLaunchArguments.LaunchArgumentsGetCommandLineArgs) ? "Empty" : @AppLaunchArguments.LaunchArgumentsGetCommandLineArgs)</b>
+    </p>
+    <hr />
+    <p>
+        Send a notification to Windows and close this app. After approx. 20 seconds, Windows should display the notification for this app in the bottom right-hand corner of the desktop. If you click on the notification, this application will be opened again. You should expect the parameters from windows that the app should receive at the OnLaunched event. As we will see here, this does not happen. Another way to read the start arguments is via “string[] arguments = Environment.GetCommandLineArgs();” and here we see that three parameters are received: once the directory of the app, once “-ToastActivated” and once “-Embedding”.
+
+        So the question arises as to how a proper Windows notification should be realized in MAUI if Windows does not send any parameters to our newly started app?
+    </p>
+    <br />
+    <button class="btn btn-primary" @onclick="SendNotification">send notification</button>
+}
+
+@code {
+
+    bool isNotificationSent = false;
+    string combinedArguments = "";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+            await Task.Delay(100);
+
+            string[] arguments = Environment.GetCommandLineArgs();
+            combinedArguments = string.Join(" ", arguments);
+
+
+        }
+        catch (Exception ex)
+        {
+            
+            throw;
+        }
+    }
+
+    private void SendNotification()
+    {
+        try
+        {
+#if WINDOWS
+            DateTime? dateTime = DateTime.Now.AddSeconds(20);
+            //ToastNotificationManagerCompat.History.Remove("9813", "localNotificationWindows");
+            new Microsoft.Toolkit.Uwp.Notifications.ToastContentBuilder()
+                .AddArgument("conversationId", "9813")
+                .AddToastActivationInfo(null, Microsoft.Toolkit.Uwp.Notifications.ToastActivationType.Foreground)
+                .AddText("Test", hintStyle: Microsoft.Toolkit.Uwp.Notifications.AdaptiveTextStyle.Header)
+                .AddText("This is a test notification in Windows", hintStyle: Microsoft.Toolkit.Uwp.Notifications.AdaptiveTextStyle.Body)
+                .SetBackgroundActivation()
+                .Schedule((DateTimeOffset)dateTime.Value, t =>
+                {
+                    t.ExpirationTime = dateTime.Value.AddDays(1);
+                    t.Tag = "9813";
+                    t.Group = "localNotificationWindows";
+                    t.Id = "9813";
+                });
+
+            isNotificationSent = true;
+#endif
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            
+            throw;
+        }
+    }
+}
