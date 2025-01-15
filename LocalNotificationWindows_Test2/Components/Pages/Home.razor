@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using Microsoft.Windows.AppNotifications.Builder
 
 
 <h1>Local notification in windows</h1>
@@ -45,14 +46,11 @@ else
         {
             await Task.Delay(100);
 
-            string[] arguments = Environment.GetCommandLineArgs();
-            combinedArguments = string.Join(" ", arguments);
-
-
+            combinedArguments = string.Join(" ", AppLaunchArguments.LaunchArguments);
         }
         catch (Exception ex)
         {
-            
+
             throw;
         }
     }
@@ -62,8 +60,10 @@ else
         try
         {
 #if WINDOWS
-            DateTime? dateTime = DateTime.Now.AddSeconds(20);
+            DateTime? dateTime = DateTime.Now.AddSeconds(5);
+
             //ToastNotificationManagerCompat.History.Remove("9813", "localNotificationWindows");
+            /*
             new Microsoft.Toolkit.Uwp.Notifications.ToastContentBuilder()
                 .AddArgument("conversationId", "9813")
                 .AddToastActivationInfo(null, Microsoft.Toolkit.Uwp.Notifications.ToastActivationType.Foreground)
@@ -71,12 +71,23 @@ else
                 .AddText("This is a test notification in Windows", hintStyle: Microsoft.Toolkit.Uwp.Notifications.AdaptiveTextStyle.Body)
                 .SetBackgroundActivation()
                 .Schedule((DateTimeOffset)dateTime.Value, t =>
-                {
+                    {
                     t.ExpirationTime = dateTime.Value.AddDays(1);
                     t.Tag = "9813";
                     t.Group = "localNotificationWindows";
                     t.Id = "9813";
                 });
+                */
+
+            //ToastNotificationManagerCompat.History.Remove("9813", "localNotificationWindows");
+            var appNotification = new AppNotificationBuilder()
+                    .AddArgument("conversationId", "9813")
+                    // .AddToastActivationInfo(null, Microsoft.Toolkit.Uwp.Notifications.ToastActivationType.Foreground)
+                    .AddText("Test", new AppNotificationTextProperties().SetMaxLines(1))
+                    .AddText("This is a test notification in Windows")
+                    .BuildNotification();
+
+            Microsoft.Windows.AppNotifications.AppNotificationManager.Default.Show(appNotification);
 
             isNotificationSent = true;
 #endif
