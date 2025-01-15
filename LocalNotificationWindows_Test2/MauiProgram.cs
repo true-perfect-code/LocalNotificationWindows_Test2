@@ -6,6 +6,7 @@ namespace LocalNotificationWindows_Test2
     {
         public static string LaunchArguments { get; set; }
         public static string LaunchArgumentsGetCommandLineArgs { get; set; }
+        public static string LaunchArgumentsOnNotificationInvoked { get; set; }
     }
 
     public static class MauiProgram

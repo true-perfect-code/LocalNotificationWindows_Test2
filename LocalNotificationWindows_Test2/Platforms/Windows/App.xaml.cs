@@ -67,7 +67,8 @@ namespace LocalNotificationWindows_Test2.WinUI
 
         private void My9813NotificationReceived(AppNotificationActivatedEventArgs args)
         {
-            File.WriteAllLines("C:\\Temp\\Notification9813.txt", new string[] { "Notification 9813" });
+            //File.WriteAllLines("C:\\Temp\\Notification9813.txt", new string[] { "Notification 9813" });
+            //AppLaunchArguments.LaunchArgumentsGetCommandLineArgs = string.Join(" ", arguments);
         }
 
         ~NotificationManager()
@@ -88,7 +89,8 @@ namespace LocalNotificationWindows_Test2.WinUI
 
         private void OnNotificationInvoked(AppNotificationManager sender, AppNotificationActivatedEventArgs args)
         {
-            File.WriteAllText("C:\\Temp\\GeneralNotification.txt", args.Argument);
+            //File.WriteAllText("C:\\Temp\\GeneralNotification.txt", args.Argument);
+            AppLaunchArguments.LaunchArgumentsOnNotificationInvoked = string.Join(" ", " OnNotificationInvoked -> " + args.Argument);
         }
 
         public void Unregister()

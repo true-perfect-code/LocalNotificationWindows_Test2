@@ -47,7 +47,8 @@
         <!--Register COM CLSID-->
       <com:Extension Category="windows.comServer">
         <com:ComServer>
-          <com:ExeServer Executable="SampleApp\SampleApp.exe" DisplayName="SampleApp" Arguments="----AppNotificationActivated:">
+
+          <com:ExeServer Executable="LocalNotificationWindows_Test2.exe" DisplayName="LocalNotificationWindows_Test2" Arguments="----AppNotificationActivated:">
             <com:Class Id="167c8731-e9f7-4f2d-926b-81572a35bbaa" /> <!-- Use your GUID -->
           </com:ExeServer>
         </com:ComServer>

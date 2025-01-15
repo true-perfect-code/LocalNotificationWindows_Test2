@@ -27,6 +27,10 @@ else
     </p>
     <hr />
     <p>
+        Read start arguments via App.xaml.cs -> OnNotificationInvoked(...): <b>@(String.IsNullOrEmpty(@AppLaunchArguments.LaunchArgumentsOnNotificationInvoked) ? "Empty" : @AppLaunchArguments.LaunchArgumentsOnNotificationInvoked)</b>
+    </p>
+    <hr />
+    <p>
         Send a notification to Windows and close this app. After approx. 20 seconds, Windows should display the notification for this app in the bottom right-hand corner of the desktop. If you click on the notification, this application will be opened again. You should expect the parameters from windows that the app should receive at the OnLaunched event. As we will see here, this does not happen. Another way to read the start arguments is via “string[] arguments = Environment.GetCommandLineArgs();” and here we see that three parameters are received: once the directory of the app, once “-ToastActivated” and once “-Embedding”.
 
         So the question arises as to how a proper Windows notification should be realized in MAUI if Windows does not send any parameters to our newly started app?
