@@ -41,7 +41,7 @@
 
       <!--Specify which CLSID to activate when notification is clicked-->
       <desktop:Extension Category="windows.toastNotificationActivation">
-        <desktop:ToastNotificationActivation ToastActivatorCLSID="167c8731-e9f7-4f2d-926b-81572a35bbaa" /> <!-- Use your GUID -->
+        <desktop:ToastNotificationActivation ToastActivatorCLSID="35A8F136-D7F4-46B0-B884-1464B80BCAED" /> <!-- Use your GUID -->
       </desktop:Extension>
 
         <!--Register COM CLSID-->
@@ -49,7 +49,7 @@
         <com:ComServer>
 
           <com:ExeServer Executable="LocalNotificationWindows_Test2.exe" DisplayName="LocalNotificationWindows_Test2" Arguments="----AppNotificationActivated:">
-            <com:Class Id="167c8731-e9f7-4f2d-926b-81572a35bbaa" /> <!-- Use your GUID -->
+            <com:Class Id="35A8F136-D7F4-46B0-B884-1464B80BCAED" /> <!-- Use your GUID -->
           </com:ExeServer>
         </com:ComServer>
       </com:Extension>

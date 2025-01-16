@@ -85,8 +85,13 @@ else
 
             //ToastNotificationManagerCompat.History.Remove("9813", "localNotificationWindows");
             var appNotification = new AppNotificationBuilder()
+                    // .AddArgument("conversationId", "9813")
+                    // // .AddToastActivationInfo(null, Microsoft.Toolkit.Uwp.Notifications.ToastActivationType.Foreground)
+                    // .AddText("Test", new AppNotificationTextProperties().SetMaxLines(1))
+                    // .AddText("This is a test notification in Windows")
+                    // .BuildNotification();
                     .AddArgument("conversationId", "9813")
-                    // .AddToastActivationInfo(null, Microsoft.Toolkit.Uwp.Notifications.ToastActivationType.Foreground)
+                    .AddArgument("action", "ToastClick")  // Optional
                     .AddText("Test", new AppNotificationTextProperties().SetMaxLines(1))
                     .AddText("This is a test notification in Windows")
                     .BuildNotification();
